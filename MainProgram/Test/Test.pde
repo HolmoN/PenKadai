@@ -1,7 +1,7 @@
 void setup()
 {
   println("hello world");
-  println("ohgoehgoehogheoghoe");
+  println("oheohgohoghe");
 }
 
 void draw()
