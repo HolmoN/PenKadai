@@ -11,6 +11,8 @@ interface IHoleSceneVisualizable
   public void init();
   //drawと同じ
   public void tick();
+  //mousePressedと同じ
+  public void onMousePressed();
   //モジュールの値が入った参照型オブジェクトが渡される
   public void ReceiveModuleValue(ModuleContainer container);
   
