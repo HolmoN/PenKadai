@@ -64,18 +64,11 @@ class TitleSceneVisualizable implements ITitleSceneVisualizable
     rectbutton2.ReDraw();   //二人プレイのボタン表示
     fill(0);
     text("二人プレイ", w/2,h*3/4);  
-    
-    if(mousePressed)   //クリックされた
-    {
-      mousePressed();
-    }
-    
   }
-  
-  void mousePressed() 
+  public void onMousePressed()
   {
-   // rectbutton1.OnClicked();
-   // rectbutton2.OnClicked();
+    // rectbutton1.OnClicked();
+    // rectbutton2.OnClicked();
     
     if( rectbutton1.OnClicked() )  //一人プレイがクリックされた
     {
