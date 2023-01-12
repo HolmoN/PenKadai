@@ -105,7 +105,46 @@ class RectButton
 
 ///////////////////////////////////////////////////////////////
 //WindowObject
-
+class WindowObject
+{
+  float x = 50;
+  float y = 500;
+  float w = 700;
+  float h = 250;
+  
+  float textX = 100;
+  float textY = 600;
+  int textSize = 50;
+  
+  String text = "";
+  
+  public void ReDraw()
+  {
+    fill(150);
+    rect(x, y, w, h);
+    fill(0);
+    textSize(textSize);
+    textAlign(LEFT);
+    text(text, textX, textY);
+  }
+  
+  public boolean OnClicked()
+  {
+    boolean result = false;
+    
+    if(x<mouseX && mouseX<x+w)
+    {
+      if(y<mouseY && mouseY<y+h) result = true;
+    }
+    
+    return result;
+  }
+  
+  public void SetText(String _text)
+  {
+    text = _text;
+  }
+}
 
 ///////////////////////////////////////////////////////////////
 //ModuleContainer
