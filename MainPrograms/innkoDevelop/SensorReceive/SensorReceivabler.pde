@@ -1,20 +1,17 @@
+import processing.serial.*; //シリアル通信用のライブラリを使用する宣言
+
 class SensorReceivabler implements ISensorReceivable
 {
-  public ArrayList<SensorValue> GetSensorValues()
+  public ModuleContainer GetSensorValues()
   {
-    return null;
+    return module;
   }
   
   ModuleContainer module = new ModuleContainer(); 
-  
-   
-   import processing.serial.*; //シリアル通信用のライブラリを使用する宣言
   Serial serial; //シリアル通信用の変数
   
   public void init(SensorReceive s)
   {
-   
-  
     println(Serial.list()); //シリアルポートの一覧を表示
     serial = new Serial(s, Serial.list()[0], 9600 );
     delay(2000);
