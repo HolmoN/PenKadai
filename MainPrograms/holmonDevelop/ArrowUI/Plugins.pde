@@ -154,5 +154,4 @@ class ModuleContainer
   int DistanceValue;
   int TemperatureValue;
   int LightValue;
-  int VolumeValue;
 }
