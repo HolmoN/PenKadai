@@ -1,11 +1,15 @@
-//扉のシーンを実装するためのインターフェース
-interface IDoorSceneVisualizable
+public enum eArrowDirection
 {
-  //別のシーンに切り替え可能かどうかを知らせるイベントを返す
-  //切り替え可能かどうかが値として返される
-  public IObservable<Boolean> SceneSwitchable();
-  //脱出したかどうかを知らせるイベントを返す
-  public IObservable<Unit> Escaped();
+  Right,
+  Left
+}
+
+//扉のシーンを実装するためのインターフェース
+interface ISceneSwitcherVisualizable
+{
+  //別のシーンへの切り替えボタンが押されたかどうかを返す
+  //fで左、tで右
+  public IObservable<eArrowDirection> PushedArrow();
   
   //setupと同じ
   public void init();
@@ -13,13 +17,7 @@ interface IDoorSceneVisualizable
   public void tick();
   //mousePressedと同じ
   public void onMousePressed();
-  //モジュールの値が入った参照型オブジェクトが渡される
-  public void ReceiveModuleValue(ModuleContainer container);
   
-  //trueを入れると最初の画面が表示される
-  //falseを入れると、どんな状態であっても表示が消える
+  //trueを入れると表示される
   public void Display(Boolean enable);
-  
-  //脱出可能なフラグがたっているかどうか渡される
-  public void Escapable(Boolean enable);
 }
