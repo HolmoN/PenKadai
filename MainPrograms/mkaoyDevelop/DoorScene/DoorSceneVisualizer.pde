@@ -131,13 +131,8 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
       }
 
       if (img2_flag == 0 && img3_flag == 0) {
-        if ((mouseY>140&&mouseY<650) && (((mouseX>0&&mouseX<100)||(mouseX>700&&mouseX<800)))) {
-          SceneSwitchable.OnNext(true);
-          println("シーン切り替え可");    //通常画面の両サイドをクリックしたとき、シーン切り替え可
-        } else {
-          SceneSwitchable.OnNext(false);
-          println("シーン切り替え不可");  //両サイド以外をクリックしたとき、シーン切り替え不可
-        }
+        SceneSwitchable.OnNext(true);
+        println("シーン切り替え可");    //通常画面の両サイドをクリックしたとき、シーン切り替え可
       } else {
         SceneSwitchable.OnNext(false);  //通常画面以外のとき、シーン切り替え不可
         println("シーン切り替え不可");
