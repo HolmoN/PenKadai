@@ -1,5 +1,9 @@
-class NetworkConnect implements INetworkConnectable{
-  
+import processing.net.*;
+Server myServer = new Server( this, 12345 );
+Client myClient = new Client( this, "127.0.0.1", 12345 );
+
+class NetworkConnect implements INetworkConnectable
+{
   int _b1;
   int getkey;
   boolean _isServer;
@@ -39,6 +43,12 @@ class NetworkConnect implements INetworkConnectable{
     }    
     return true;    //鍵を手に入れた
     
+  }
+  
+  public void Stop()
+  {
+    if(_isServer) myServer.stop();
+    else myClient.stop();
   }
   
   public void IsServer(boolean isServer){   //trueならサーバ
