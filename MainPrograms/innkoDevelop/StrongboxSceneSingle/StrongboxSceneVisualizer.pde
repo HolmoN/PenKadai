@@ -53,6 +53,8 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
 
   public void tick()
   {
+    if(!Display_enable) return;
+    
     if (flag_paper) //trueだと対応した画像が表示
     {
       img = img_paper;
@@ -183,6 +185,8 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
 
   public void onMousePressed()
   {
+    if(!Display_enable) return;
+    
     if ( window.OnClicked() )
     {
       windowflag=false; //クリックするとメッセージウィンドウを非表示
@@ -313,7 +317,8 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
     background(255);
   }
 
-  public void PlayerNumber(Boolean enable)
+  public void ReceivePartnerKeyFrag(Boolean enable)
   {
+    
   }
 }

@@ -53,6 +53,8 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
   }
 
   public void tick() {
+    if(!Display_enable) return;
+    
     if ( nomaliceflag ) {
       img = img_nomalice;
     } else if ( ice1flag ) {

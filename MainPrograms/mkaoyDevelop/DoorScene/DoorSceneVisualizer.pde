@@ -40,6 +40,8 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
   }
 
   public void tick() {
+    if(!Display_enable) return;
+    
     if (img2_flag == 1) {   //どの画像を表示するか
       img = img2;
     } else if (img3_flag == 1) {
@@ -147,10 +149,7 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
 
   public void Display(Boolean enable) {
     Display_enable = enable;
-    background(255);
-    if (enable) {
-      tick();
-    }else{    //trueのときに最初の画面を表示するようにする
+    if (!enable){    //trueのときに最初の画面を表示するようにする
       img2_flag = 0;
       Keyhole_click = false;
     }

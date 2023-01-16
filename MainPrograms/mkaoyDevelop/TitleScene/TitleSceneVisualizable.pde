@@ -12,6 +12,8 @@ class TitleSceneVisualizable implements ITitleSceneVisualizable
     return PushedMultiPlay;
   }
   
+  Boolean _display = false;
+  
   int w=800;
   int h=800;  //画面サイズ
   int Buttonw=500;  //四角いボタンの横幅
@@ -36,6 +38,8 @@ class TitleSceneVisualizable implements ITitleSceneVisualizable
   }
   public void tick()   //draw
   {
+    if(!_display) return;
+    
     background(255);
     image(img, 0, 0);   //タイトル
     
@@ -67,6 +71,7 @@ class TitleSceneVisualizable implements ITitleSceneVisualizable
   }
   public void onMousePressed()
   {
+    if(!_display) return;
     // rectbutton1.OnClicked();
     // rectbutton2.OnClicked();
     
@@ -84,10 +89,7 @@ class TitleSceneVisualizable implements ITitleSceneVisualizable
   
   public void Display(Boolean enable)
   {
-    background(255);
-    if(enable != false){
-      tick();      //Display(true)のとき表示
-    }     
+    _display = enable; 
   }
   
 }
