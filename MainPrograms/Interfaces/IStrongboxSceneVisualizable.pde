@@ -18,7 +18,7 @@ interface IStrongboxSceneVisualizable
   //trueを入れると最初の画面が表示される
   //falseを入れると、どんな状態であっても表示が消える
   public void Display(Boolean enable);
-  //プレイヤー番号が渡される
-  //0->一人プレイ, 1->二人プレイ1P, 2->二人プレイ2P 
-  public void PlayerNumber(Boolean enable);
+  //マルチプレイの時、もう一人のプレイヤーが鍵の半分をを手に入れたかどうか渡される
+  //一人プレイの時は空でいい
+  public void ReceivePartnerKeyFrag(Boolean enable);
 }
