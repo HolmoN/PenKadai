@@ -6,9 +6,8 @@ void setup(){
 }
 
 void draw(){
-  //rs.tick();
+  rs.tick();
   rs.Display(true);
-
 }
 
 void mousePressed(){
