@@ -14,9 +14,7 @@ void setup() {
   pinMode(Echo, INPUT); //超音波センサの入出力pin指定
 }
 
-void loop() {
-  
-  
+void loop() {  
   val = new int[n];
   if (Serial.available() > 0) //データ要求文字が届いているかの確認
   {

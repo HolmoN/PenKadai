@@ -1,21 +1,16 @@
-class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
+class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
 {
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> GetKey = new Subject<Unit>();
   Subject<Unit> _displaied = new Subject<Unit>();
 
-  PImage img, img_normal, img_paper, img_strongboxopen, img_strongboxclose, img_strongboxopenwithhalfkey, img_buriedkeyempty, img_buriedkeyhalf, img_buriedkeyfullwithkey;
-  boolean flag_normal, flag_paper, flag_strongboxopen, flag_strongboxclose, flag_bluekey, flag_strongboxopenwithkey, flag_buriedkeyempty, flag_buriedkeyhalf, flag_buriedkeyfullwithkey; //trueだと対応した画像が表示
+  PImage img, img_normal, img_paper, img_strongboxopen, img_strongboxclose, img_strongboxopenwithkey;
+  boolean flag_normal, flag_paper, flag_strongboxopen, flag_strongboxclose, flag_bluekey, flag_strongboxopenwithkey; //trueだと対応した画像が表示
   int pass1=10, pass2=10, pass3=10, pass4=10; //パスワードの保存 初期値は10で未入力の代わり
-  int f=1; //鍵が光りだした...!をうまく表示させるための苦肉の策
-  boolean strongboxopened; //場面切り替えのboolean(金庫が開いたときの判定
-  boolean keyshined; //赤青両者とも鍵を埋め込んだらtrueになる「
-  boolean judge_keyempty, judge_keyhalf, judge_keyfull; //鍵の埋め込み状態を判定
+  boolean strongboxopened; //場面切り替えのboolean(金庫が開いたときの判定)
 
-  boolean Display_enable =false; //他のシーンの時はfalseに
-  boolean eachgetkey=false; //二人協力用:青が鍵を埋め込んだ時はtrue
-  boolean getkey = false;  //鍵を入手しているか
-  boolean gethalfkey = false; //鍵を所持しているか
+  boolean Display_enable;
+  boolean getkey = false;   //鍵を入手しているか
 
   WindowObject window = new WindowObject();
   boolean windowflag = false;
@@ -29,10 +24,12 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
   {
     return SceneSwitchable;
   }
+
   public IObservable<Unit> GetKey()
   {
     return GetKey;
   }
+  
   public IObservable<Unit> Displaied()
   {
     return _displaied;
@@ -40,14 +37,11 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
 
   public void init()
   {
-    img_normal = loadImage("通常場面 金庫と紙 (二人協力赤).png");
+    img_normal = loadImage("通常場面 金庫と紙.png");
     img_paper = loadImage("紙注目場面.png");
     img_strongboxopen = loadImage("金庫,ダイヤル金庫注目場面 開.png");
     img_strongboxclose = loadImage("金庫注目場面修正版.png");
-    img_strongboxopenwithhalfkey = loadImage("金庫,ダイヤル金庫注目場面 開 鍵付き(二人協力赤).png");
-    img_buriedkeyempty = loadImage("鍵埋め場面 二人協力 穴埋め未 .png");
-    img_buriedkeyhalf = loadImage("鍵埋め場面 二人協力 上半分埋まり.png");
-    img_buriedkeyfullwithkey = loadImage("鍵埋め場面 二人協力 穴埋め完了 鍵付き.png");
+    img_strongboxopenwithkey = loadImage("金庫,ダイヤル金庫注目場面 開 鍵付き.png");
     PFont font = createFont("Meiryo", 34);
     textFont(font);
 
@@ -60,20 +54,13 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     flag_strongboxclose = false;
     flag_bluekey = false;
     flag_strongboxopenwithkey=false;
-    flag_buriedkeyempty=false;
-    flag_buriedkeyhalf=false;
-    flag_buriedkeyfullwithkey=false;
-    judge_keyempty=true; //keyemptyだけtrue
-    judge_keyhalf=false;
-    judge_keyfull=false;
-    keyshined=false;
     strongboxopened = false; //boolean初期化
   }
 
   public void tick()
   {
-    if (!Display_enable) return;
-
+    if(!Display_enable) return;
+    
     if (flag_paper) //trueだと対応した画像が表示
     {
       img = img_paper;
@@ -85,21 +72,11 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
       img = img_strongboxclose;
     } else if (flag_strongboxopenwithkey)
     {
-      img = img_strongboxopenwithhalfkey;
-    } else if (flag_buriedkeyempty)
-    {
-      img=img_buriedkeyempty;
-    } else if (flag_buriedkeyhalf)
-    {
-      img=img_buriedkeyhalf;
-    } else if (flag_buriedkeyfullwithkey)
-    {
-      img=img_buriedkeyfullwithkey;
+      img = img_strongboxopenwithkey;
     } else
     {
       img = img_normal; //flagが全部falseだと通常場面
     }
-
 
     image(img, 0, 0);
 
@@ -195,9 +172,12 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
       pass4=10; //パスワードリセット
     }
 
+    if (getkey)
+    {
+      window.SetText("青の鍵を手に入れた!"); //鍵を手に入れたときの文章
+    }
 
-
-    if ( img ==  img_paper|| img == img_strongboxclose || img==img_buriedkeyempty || img==img_buriedkeyhalf)  //戻るボタン
+    if ( img ==  img_paper|| img == img_strongboxclose)  //戻るボタン
     {   
       fill(0, 255, 0);             
       circleButton.ReDraw();
@@ -206,22 +186,13 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
       textAlign(CENTER, CENTER);
       text("戻る", 50, 50);
     }
-
-    if (judge_keyhalf && eachgetkey==true && f==1 && img==img_buriedkeyhalf)
-    {
-      println(2);
-      windowflag=true;
-      window.SetText("鍵が光りだした");
-      keyshined=true;
-      f=0; //もう一度このプログラムを動かさないため
-    }
   }
 
 
   public void onMousePressed()
   {
-    if (!Display_enable) return;
-
+    if(!Display_enable) return;
+    
     if ( window.OnClicked() )
     {
       windowflag=false; //クリックするとメッセージウィンドウを非表示
@@ -310,65 +281,23 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
       } else if (strongboxopened) //金庫が開いたとき
       {
         windowflag=true;
+        GetKey.OnNext(Unit.def); //鍵入手
         getkey = true;
-        gethalfkey =true;
         flag_strongboxopen=false;
         flag_strongboxopenwithkey=true; //鍵を入手したときの画像を出力(透過画像が使えないので金庫が開いた時の画像と鍵の画像をペイントで合成したものを表示)
         println("鍵入手"); //鍵入手確認用(消してOK)
-        window.SetText("青の鍵(半分)を手に入れた!");
+      }
+
+      if ( circleButton.OnClicked() ) {   //戻るボタンクリック
+        windowflag = false;   //メッセージウィンドウ非表示
+        flag_normal = false;
+        flag_paper = false;
+        flag_strongboxopen = false;
+        flag_strongboxclose = false;
+        flag_bluekey = false;
         strongboxopened=false;
+        flag_strongboxopenwithkey=false; //通常場面の画像を出力するために全てfalseに
       }
-    }
-    if ( circleButton.OnClicked() ) {   //戻るボタンクリック
-      windowflag = false;   //メッセージウィンドウ非表示
-      flag_normal = false;
-      flag_paper = false;
-      flag_strongboxopen = false;
-      flag_strongboxclose = false;
-      flag_bluekey = false;
-      strongboxopened=false;
-      flag_strongboxopenwithkey=false;
-      flag_buriedkeyempty=false;
-      flag_buriedkeyhalf=false;
-      flag_buriedkeyfullwithkey=false;//通常場面の画像を出力するために全てfalseに
-    }
-    if (img==img_normal && mouseX>222 && mouseX<600 && mouseY>222 && mouseY<405) //通常場面で掛け軸をクリックしたとき
-    {
-      if (judge_keyempty) //鍵が埋め込まれていない状態なら
-      {
-        flag_buriedkeyempty=true;
-        windowflag=true;
-        window.SetText("何か埋められそうだ...");
-      } else if (judge_keyhalf) //鍵(半分)が埋め込まれている状態なら
-      {
-        flag_buriedkeyhalf=true;
-      }
-    }
-
-    if (gethalfkey==true && img==img_buriedkeyempty) //鍵(半分)を手元に持っているかつ鍵が埋め込まれていない場面が表示されているとき
-    {
-      judge_keyempty=false;
-      flag_buriedkeyempty=false;
-      judge_keyhalf=true;
-      flag_buriedkeyhalf=true;
-      GetKey.OnNext(Unit.def); //半分埋めこみ完了
-      gethalfkey=false;   //鍵を使用して手元にはない
-    }
-
-    if (keyshined==true) //鍵が光りだした...!の後に実行される
-    {
-      judge_keyhalf=false;
-      windowflag=false;
-      flag_buriedkeyhalf=false;
-      flag_buriedkeyfullwithkey=true;
-      windowflag=true;
-      window.SetText("青の鍵を手に入れた!");
-      keyshined=false;
-    }
-
-    if (flag_buriedkeyfullwithkey && windowflag==false)
-    {
-      flag_buriedkeyfullwithkey=false;
     }
     if (flag_strongboxopenwithkey==true && windowflag==false) //鍵入手後、ウィンドウクリックで通常場面に戻る
     {
@@ -391,12 +320,12 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
 
   public void Display(Boolean enable) {
     Display_enable = enable;
+    if(enable )_displaied.OnNext(Unit.def);
     background(255);
-    if(enable) _displaied.OnNext(Unit.def);
   }
 
   public void ReceivePartnerKeyFrag(Boolean enable)
   {
-    eachgetkey=enable;
+    
   }
 }
