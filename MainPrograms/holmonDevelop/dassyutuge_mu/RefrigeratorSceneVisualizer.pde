@@ -17,6 +17,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
   boolean returnButton;
 
   ModuleContainer module = new ModuleContainer();
+  int temp = 0;  //基準温度取得用
 
   boolean icemelt = false;  //氷が途中まで溶けたか 
   boolean ice_fin = false;  //氷が溶け終わったか
@@ -60,8 +61,6 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
   public void tick() {
     if(!Display_enable) return;
     
-    println(moduleContainer.TemperatureValue);
-    
     if ( nomaliceflag ) {
       img = img_nomalice;
     } else if ( ice1flag ) {
@@ -88,13 +87,13 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
     }
 
     if (img == img_ice1) {
-      if(module.TemperatureValue >= 15){  //温度が15以上のとき画像切り替え
+      if(module.TemperatureValue >= temp + 2){  //温度が+2度以上のとき画像切り替え
         ice1flag = false;
         ice2flag = true;
         icemelt = true;
       }
     } else if (img == img_ice2) {
-      if(module.TemperatureValue >= 16){  //温度が16以上のとき画像切り替え
+      if(module.TemperatureValue >= temp + 3){  //温度が+3度以上のとき画像切り替え
         ice2flag = false;
         ice3flag = true;
       }
@@ -143,10 +142,12 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
               windowflag = false;
             }
           } else {
-            if (mouseX>540 && mouseX<540+90 && mouseY>665 && mouseY<665+90) {
+            if (mouseX>540 && mouseX<540+90 && mouseY>665 && mouseY<665+90) { //氷クリック
               nomaliceflag = false;
               if(icemelt==false){   //氷が溶けていないとき
                 ice1flag = true;    //氷をクリック、氷拡大
+                temp = module.TemperatureValue;  //基準温度を取得
+                println( temp );
               }else{
                 ice2flag = true;  //途中まで溶けているとき
               }
@@ -219,7 +220,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
     background(255);
     if( enable ){
       tick();
-    } else if( img != img_nomal || img != img_open || img != img_close ){  //氷を外に出した後なら、trueを入れると通常場面（氷あり）が表示される
+    } else if( img != img_nomal && img != img_open && img != img_close ){  //氷を外に出した後なら、trueを入れると通常場面（氷あり）が表示される
       nomaliceflag = true;
       ice1flag = false;
       ice2flag = false;
