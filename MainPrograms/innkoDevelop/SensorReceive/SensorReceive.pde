@@ -1,10 +1,10 @@
-SensorReceivabler sensor = new SensorReceivabler();
+ISensorReceivable model = new SensorReceivabler();
 void setup()
 {
-  sensor.init(this);
+  model.init(this);
 }
 
 void draw()
 {
-  sensor.tick();
+  model.tick();
 }

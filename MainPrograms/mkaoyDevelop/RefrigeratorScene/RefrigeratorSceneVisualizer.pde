@@ -1,4 +1,4 @@
-class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizablem {
+class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
 
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> GetKey = new Subject<Unit>();

@@ -4,7 +4,7 @@ interface IRefrigeratorSceneVisualizable
   //切り替え可能かどうかが値として返される
   public IObservable<Boolean> SceneSwitchable();
   //鍵を手に入れたかどうかのイベントを返す
-  public IObservable<Unit> GetKey();{
+  public IObservable<Unit> GetKey();
   //表示がtrueになったかどうかを返す
   public IObservable<Unit> Displaied();
   
