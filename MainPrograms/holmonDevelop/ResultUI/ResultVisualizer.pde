@@ -1,6 +1,7 @@
 public class ResultVisualizer implements IResultVisualizable
 {
   private Subject<Unit> clicked = new Subject<Unit>();
+  private Subject<Unit> _displaied = new Subject<Unit>();
   
   private String resultTime = "0:00:00";
   private Boolean display = false;
@@ -10,6 +11,10 @@ public class ResultVisualizer implements IResultVisualizable
   public IObservable<Unit> Clicked()
   {
     return clicked;
+  }
+  public IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
   
   //setupと同じ
@@ -46,6 +51,7 @@ public class ResultVisualizer implements IResultVisualizable
   public void Display(Boolean enable)
   {
     display = enable;
+    if(display) _displaied.OnNext(Unit.def);
   }
   
   //クリアタイムがString型で渡される

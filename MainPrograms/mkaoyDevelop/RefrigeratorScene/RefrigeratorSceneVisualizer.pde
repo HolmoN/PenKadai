@@ -1,7 +1,8 @@
-class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
+class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizablem {
 
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> GetKey = new Subject<Unit>();
+  Subject<Unit> _displaied = new Subject<Unit>();
 
   PImage img, keyimg, img_nomal, img_nomalice, img_ice1, img_ice2, img_ice3, img_key, img_open, img_close;
   boolean nomaliceflag, ice1flag, ice2flag, ice3flag, keyflag, openflag, closeflag;
@@ -26,6 +27,10 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
 
   public IObservable<Unit> GetKey() {
     return GetKey;
+  }
+  public IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
 
   public void init() {
@@ -208,6 +213,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
 
   public void Display(Boolean enable) {
     Display_enable = enable;
+    if(enable) _displaied.OnNext(Unit.def);
     background(255);
     if( enable ){
       tick();

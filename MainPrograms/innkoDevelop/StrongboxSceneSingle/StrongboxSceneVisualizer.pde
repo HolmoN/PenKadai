@@ -2,6 +2,7 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
 {
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> GetKey = new Subject<Unit>();
+  Subject<Unit> _displaied = new Subject<Unit>();
 
   PImage img, img_normal, img_paper, img_strongboxopen, img_strongboxclose, img_strongboxopenwithkey;
   boolean flag_normal, flag_paper, flag_strongboxopen, flag_strongboxclose, flag_bluekey, flag_strongboxopenwithkey; //trueだと対応した画像が表示
@@ -27,6 +28,11 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
   public IObservable<Unit> GetKey()
   {
     return GetKey;
+  }
+  
+  public IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
 
   public void init()
@@ -314,6 +320,7 @@ class StrongboxSceneVisualizer implements IStrongboxSceneVisualizable
 
   public void Display(Boolean enable) {
     Display_enable = enable;
+    if(enable )_displaied.OnNext(Unit.def);
     background(255);
   }
 

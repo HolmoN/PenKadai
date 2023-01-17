@@ -13,6 +13,7 @@ public class HoleSceneVisualizer implements IHoleSceneVisualizable
   
   private Subject<Boolean> _sceneSwitchable = new Subject<Boolean>();
   private Subject<Unit> _getKey = new Subject<Unit>();  private Subject<eHoleSceneView> _changedView = new Subject<eHoleSceneView>(); //eHoleSceneViewに変更があった時に呼ばれる
+  private Subject<Unit> _displaied = new Subject<Unit>();
   
   private PImage _room, _hole, _keyIm;
   
@@ -36,6 +37,11 @@ public class HoleSceneVisualizer implements IHoleSceneVisualizable
   public IObservable<Unit> GetKey()
   {
     return _getKey;
+  }
+  
+  IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
   
   public void init()
@@ -170,6 +176,7 @@ public class HoleSceneVisualizer implements IHoleSceneVisualizable
   public void Display(Boolean enable)
   {
     _display = enable;
+    if(_display)_displaied.OnNext(Unit.def);
     if(enable) HoleSceneViewChange(eHoleSceneView.room);
   }
   

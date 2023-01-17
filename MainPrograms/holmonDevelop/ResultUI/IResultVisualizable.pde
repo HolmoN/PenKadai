@@ -2,6 +2,8 @@ public interface IResultVisualizable
 {
   //画面がクリックされたことを返す
   public IObservable<Unit> Clicked();
+  //表示がtrueになったかどうかを返す
+  public IObservable<Unit> Displaied();
   
   //setupと同じ
   public void init();

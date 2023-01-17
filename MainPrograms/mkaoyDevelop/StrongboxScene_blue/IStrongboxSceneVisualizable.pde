@@ -5,6 +5,8 @@ interface IStrongboxSceneVisualizable
   public IObservable<Boolean> SceneSwitchable();
   //鍵を手に入れたかどうかのイベントを返す
   public IObservable<Unit> GetKey();
+  //表示がtrueになったかどうかを返す
+  public IObservable<Unit> Displaied();
   
   //setupと同じ
   public void init();

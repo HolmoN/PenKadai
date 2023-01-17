@@ -2,6 +2,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
   
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> GetKey = new Subject<Unit>();
+  Subject<Unit> _displaied = new Subject<Unit>();
   
   PImage img, img_nomal, img_box, img_open, img_keycomp, img_getkeycomp, img_keyhalf, img_keyhole, img_getkey;
   boolean imgbox, imgopen, imgkeycomp, imggetkeycomp, imgkeyhalf, imgkeyhole, imggetkey, imgdial;
@@ -23,6 +24,10 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
   
   public IObservable<Unit> GetKey(){
     return GetKey;
+  }
+  public IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
   
   public void init(){
@@ -240,6 +245,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
     if( !enable ){   //falseのときは表示しない
       background(255);
     }
+    if(enable) _displaied.OnNext(Unit.def);
   }
   
   public void ReceivePartnerKeyFrag(Boolean enable){

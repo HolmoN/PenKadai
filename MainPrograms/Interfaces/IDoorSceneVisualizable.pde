@@ -6,6 +6,8 @@ interface IDoorSceneVisualizable
   public IObservable<Boolean> SceneSwitchable();
   //脱出したかどうかを知らせるイベントを返す
   public IObservable<Unit> Escaped();
+  //表示がtrueになったかどうかを返す
+  public IObservable<Unit> Displaied();
   
   //setupと同じ
   public void init();

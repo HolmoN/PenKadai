@@ -2,6 +2,7 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
 
   Subject<Boolean> SceneSwitchable = new Subject<Boolean>();
   Subject<Unit> Escaped = new Subject<Unit>();
+  Subject<Unit> _displaied = new Subject<Unit>();
 
   int img2_flag=0, img3_flag=0; 
   PImage img, img1, img2, img3;
@@ -18,6 +19,10 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
   }
   public IObservable<Unit> Escaped() {
     return Escaped;
+  }
+  public IObservable<Unit> Displaied()
+  {
+    return _displaied;
   }
 
   public void init() {
@@ -153,6 +158,8 @@ class DoorSceneVisualizer implements IDoorSceneVisualizable {
       img2_flag = 0;
       Keyhole_click = false;
     }
+    
+    if(enable)_displaied.OnNext(Unit.def);
   }
 
   public void Escapable(Boolean enable) {
