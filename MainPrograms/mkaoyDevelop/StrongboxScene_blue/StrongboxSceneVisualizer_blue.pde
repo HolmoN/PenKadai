@@ -5,7 +5,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
   Subject<Unit> _displaied = new Subject<Unit>();
   
   PImage img, img_nomal, img_box, img_open, img_keycomp, img_getkeycomp, img_keyhalf, img_keyhole, img_getkey;
-  boolean imgbox, imgopen, imgkeycomp, imggetkeycomp, imgkeyhalf, imgkeyhole, imggetkey, imgdial;
+  boolean imgnomal, imgbox, imgopen, imgkeycomp, imggetkeycomp, imgkeyhalf, imgkeyhole, imggetkey, imgdial;
   
   boolean Displayenable, getkeyenable;  //描写するかどうか、もう一人が鍵を埋め込んだかどうか
   boolean inkeyhalf = false, makekey = false;   //鍵（半分）を埋め込んだか、鍵（上と下）を埋め込んだか
@@ -46,6 +46,8 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
     window = new WindowObject();
     circleButton = new CircleButton( 50, 50, 40 );   //戻るボタン
     rectButton = new RectButton( 400-150, 600, 300, 180 );  //「開く」ボタン
+    
+    imgnomal = true;
   }
   
   public void tick(){
@@ -120,7 +122,8 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
       if( img == img_nomal ){  //通常場面
         if (mouseX>100 && mouseX<100+160 && mouseY>530 && mouseY<530+160){ //金庫の当たり判定
           imgbox = true;
-          imgdial = true;          
+          imgdial = true;  
+          imgnomal = false;
           window.SetText("ダイヤルを合わせれば\n開きそうだ...");
           if( !circleButtonflag ){
             windowflag = true;
@@ -128,6 +131,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
         } else if(mouseX>215 && mouseX<215+390 && mouseY>215 && mouseY<215+200){ //掛け軸クリック
           imgkeyhole = true;
           windowflag = true;
+          imgnomal = false;
           window.SetText("何か埋められそうだ...");          
         }        
       } else if( img == img_keyhole ){  //鍵を埋める穴が表示されているとき
@@ -165,9 +169,11 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
           windowflag = false;
           imggetkey = false;
           imgopen = false;
+          imgnomal = true;
         } 
       } else if( img == img_nomal ){  //通常場面のとき
         if(mouseX>215 && mouseX<215+390 && mouseY>215 && mouseY<215+200){  //掛け軸クリック
+          imgnomal = false;
           if( !inkeyhalf ){  //まだ鍵（半分）を埋め込んでいないとき
             imgkeyhole = true;
           } else{  //鍵（半分）を埋め込んだ後
@@ -203,11 +209,13 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
           windowflag = false;
           imggetkeycomp = false;
           imgkeycomp = false;
+          imgnomal = true;
         }
       }
     }
     
-    if( circleButton.OnClicked() ){  //戻るボタンクリック      
+    if( circleButton.OnClicked() ){  //戻るボタンクリック    
+      imgnomal = true;
       if( img == img_box ){  //金庫関連
         circleButtonflag = true;
         windowflag = false;
@@ -226,7 +234,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
       }
     }
     
-    if( img == img_nomal ){  //シーン切り替え
+    if( imgnomal ){  //シーン切り替え
       SceneSwitchable.OnNext(true);
       println("シーン切り替え可");
     } else{

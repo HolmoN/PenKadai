@@ -97,7 +97,13 @@ void Presentor()
   //リザルト画面
   resultVisualizable.Displaied().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
-      //計測していたクリアタイムを渡す
+      //クリアタイムを算出する
+      float clearTime = minute() - playStartTime;
+      
+      
+      //int h = floor()
+      
+      
       resultVisualizable.ReceiveClearTime("");
     }});
   resultVisualizable.Clicked().Subscribe(new fn<Unit>(){ public void func(Unit m)
@@ -119,7 +125,6 @@ void draw()
   playModule.Strongbox().tick();
   resultVisualizable.tick();
   sensorReceivable.tick(); //センサ
-  //networkConnectable; //通信
   
   playModule.SceneSwitcher().tick();
 }
@@ -145,7 +150,7 @@ void stop()
 void init()
 {
   for(int i = 0; i < _keyFrags.length; i++) _keyFrags[i] = false;
-  //計測タイムのリセット
+  playStartTime = 0;
 }
 
 //ステートを切り替える
