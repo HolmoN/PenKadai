@@ -12,7 +12,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
   boolean keyshined; //赤青両者とも鍵を埋め込んだらtrueになる「
   boolean judge_keyempty, judge_keyhalf, judge_keyfull; //鍵の埋め込み状態を判定
 
-  boolean Display_enable =false; //他のシーンの時はfalseに
+  boolean Display_enable =true; //他のシーンの時はfalseに
   boolean eachgetkey=false; //二人協力用:青が鍵を埋め込んだ時はtrue
   boolean getkey = false;  //鍵を入手しているか
   boolean gethalfkey = false; //鍵を所持しているか
@@ -40,6 +40,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
 
   public void init()
   {
+    
     img_normal = loadImage("通常場面 金庫と紙 (二人協力赤).png");
     img_paper = loadImage("紙注目場面.png");
     img_strongboxopen = loadImage("金庫,ダイヤル金庫注目場面 開.png");
@@ -54,7 +55,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     circleButton = new CircleButton(50, 50, 40); //戻るボタン
     returnButton = false; //戻るボタンクリック判定
 
-    flag_normal = false;
+    flag_normal = true;
     flag_paper = false;
     flag_strongboxopen = false;
     flag_strongboxclose = false;
@@ -73,6 +74,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
   public void tick()
   {
     if (!Display_enable) return;
+
 
     if (flag_paper) //trueだと対応した画像が表示
     {
@@ -95,7 +97,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     } else if (flag_buriedkeyfullwithkey)
     {
       img=img_buriedkeyfullwithkey;
-    } else
+    } else if(flag_normal)
     {
       img = img_normal; //flagが全部falseだと通常場面
     }
@@ -110,6 +112,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
 
     if (img==img_paper && module.LightValue>300) //紙注目場面でcdsセルにライトを当てるとパスワード出現 
     {
+      
       fill(0);
       textSize(80);
       textAlign(CENTER, CENTER);
@@ -229,14 +232,16 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     if (getkey == false) //鍵未入手時のみ金庫などのクリックに反応
     {
 
-      if (img == img_normal) //通常場面
+      if (flag_normal) //通常場面
       {
         if (mouseX>100 && mouseX<100+160 && mouseY>530 && mouseY<530+160) //金庫の当たり判定
         {
-          flag_strongboxclose = true; //金庫閉の画像出力
+          flag_strongboxclose = true;
+          flag_normal=false; //金庫閉の画像出力
         } else if (mouseX>550 && mouseX<550+200 && mouseY>620 && mouseY<620+120) //紙の当たり判定
         {
           flag_paper = true; //紙の画像出力
+          flag_normal=false;
           windowflag = true;
           window.SetText("ライトで透かせば\n何か見えるかも...");
         }
@@ -312,7 +317,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
         windowflag=true;
         getkey = true;
         gethalfkey =true;
-        flag_strongboxopen=false;
+        flag_strongboxopen=false;  //paypay
         flag_strongboxopenwithkey=true; //鍵を入手したときの画像を出力(透過画像が使えないので金庫が開いた時の画像と鍵の画像をペイントで合成したものを表示)
         println("鍵入手"); //鍵入手確認用(消してOK)
         window.SetText("青の鍵(半分)を手に入れた!");
@@ -321,7 +326,7 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     }
     if ( circleButton.OnClicked() ) {   //戻るボタンクリック
       windowflag = false;   //メッセージウィンドウ非表示
-      flag_normal = false;
+      flag_normal = true;
       flag_paper = false;
       flag_strongboxopen = false;
       flag_strongboxclose = false;
@@ -332,8 +337,9 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
       flag_buriedkeyhalf=false;
       flag_buriedkeyfullwithkey=false;//通常場面の画像を出力するために全てfalseに
     }
-    if (img==img_normal && mouseX>222 && mouseX<600 && mouseY>222 && mouseY<405) //通常場面で掛け軸をクリックしたとき
+    if (flag_normal==true && mouseX>222 && mouseX<600 && mouseY>222 && mouseY<405) //通常場面で掛け軸をクリックしたとき
     {
+      flag_normal=false;
       if (judge_keyempty) //鍵が埋め込まれていない状態なら
       {
         flag_buriedkeyempty=true;
@@ -369,12 +375,14 @@ class StrongboxSceneVisualizer_red implements IStrongboxSceneVisualizable
     if (flag_buriedkeyfullwithkey && windowflag==false)
     {
       flag_buriedkeyfullwithkey=false;
+      flag_normal=true;
     }
     if (flag_strongboxopenwithkey==true && windowflag==false) //鍵入手後、ウィンドウクリックで通常場面に戻る
     {
       flag_strongboxopenwithkey=false;
+      flag_normal=true;
     }
-    if ( img == img_normal ) {  //シーン切り替え可能かどうか
+    if ( flag_normal ) {  //シーン切り替え可能かどうか
       if ( windowflag == false ) {
         SceneSwitchable.OnNext(true);
         println("シーン切り替え可");
