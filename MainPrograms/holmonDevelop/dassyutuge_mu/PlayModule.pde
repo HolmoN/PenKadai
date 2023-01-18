@@ -188,13 +188,13 @@ public class RedPlayModule extends PlayModule implements IPlayModule
   Boolean myKey;
   Boolean partnerKey;
   
-  public RedPlayModule(ModuleContainer moduleContainer)
+  public RedPlayModule(ModuleContainer moduleContainer, dassyutuge_mu gam)
   {
     super(moduleContainer);
     
     myKey = false;
     partnerKey = false;
-    networkConnectable.IsServer(isServer); 
+    networkConnectable.IsServer(isServer, gam); 
   }
   
   @Override
@@ -284,8 +284,12 @@ public class RedPlayModule extends PlayModule implements IPlayModule
     partnerKey = networkConnectable.Receive();
     strongboxSceneVisualizable.ReceivePartnerKeyFrag(partnerKey);
     
+    println("Received");
+    
     //送信
     networkConnectable.Send(myKey);
+    
+    println("Received");
     
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
@@ -305,13 +309,13 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
   Boolean myKey;
   Boolean partnerKey;
   
-  public BluePlayerModule(ModuleContainer moduleContainer)
+  public BluePlayerModule(ModuleContainer moduleContainer, dassyutuge_mu gam)
   {
     super(moduleContainer);
     
     myKey = false;
     partnerKey = false;
-    networkConnectable.IsServer(isServer); 
+    networkConnectable.IsServer(isServer, gam); 
   }
   
   @Override

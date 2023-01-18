@@ -1,5 +1,22 @@
 //メインコア
 
+public class NullSensor implements ISensorReceivable
+{
+  public void init(dassyutuge_mu s)
+  {
+    
+  }
+  public void tick()
+  {
+    
+  }
+  
+  public ModuleContainer GetSensorValues()
+  {
+    return new ModuleContainer();
+  }
+}
+
 enum eSceneState
 {
   Title,
@@ -179,8 +196,8 @@ void ChangeState(eSceneState state)
 void PlayModuleGenerator(int num)
 {
   if(num == 0) playModule = new SinglePlayModule(moduleContainer);
-  if(num == 1) playModule = new RedPlayModule(moduleContainer);
-  if(num == 2) playModule = new BluePlayerModule(moduleContainer);
+  if(num == 1) playModule = new RedPlayModule(moduleContainer, this);
+  if(num == 2) playModule = new BluePlayerModule(moduleContainer, this);
   
   playModule.ChangeState().Subscribe(new fn<eSceneState>(){ public void func(eSceneState m)
     {

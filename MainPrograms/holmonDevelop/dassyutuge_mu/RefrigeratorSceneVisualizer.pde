@@ -185,6 +185,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
           windowflag = false;
           keyflag = false;
           ice3flag = false;
+          nomalflag = true;
         }
       }
       

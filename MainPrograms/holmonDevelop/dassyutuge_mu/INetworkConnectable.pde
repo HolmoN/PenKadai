@@ -8,5 +8,5 @@ public interface INetworkConnectable
   public void Stop();
   
   //このプログラムを起動しているコンピューターが、サーバーとしてふるまうかどうか渡される
-  public void IsServer(boolean isServer);
+  public void IsServer(boolean isServer,dassyutuge_mu d);
 }
