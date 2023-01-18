@@ -76,7 +76,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
       triangle( -20,0, 0,-60, 20,0 ); 
       popMatrix();
     }
-    if( module.VolumeValue == 500 && rectButtonflag && img == img_box ){ 
+    if( module.VolumeValue > 500 && module.VolumeValue < 600 && rectButtonflag && img == img_box ){ 
       fill( 255, 0, 0 );    //センサの値(500のとき)によって、開くボタン表示
       rectButton.ReDraw();
       fill( 0 );          
@@ -146,7 +146,7 @@ class StrongboxSceneVisualizer_blue implements IStrongboxSceneVisualizable{
         if( window.OnClicked() ){
           windowflag = false;
         }
-        if( module.VolumeValue==500 && rectButtonflag && rectButton.OnClicked() ){
+        if( module.VolumeValue > 500 && module.VolumeValue < 600 && rectButtonflag && rectButton.OnClicked() ){
           rectButtonflag = false;   //開くボタンをクリックしたときの処理
           windowflag = true;
           window.SetText("金庫が開いた！");
