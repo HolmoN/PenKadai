@@ -61,6 +61,8 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
   public void tick() {
     if(!Display_enable) return;
     
+    
+    
     if ( nomaliceflag ) {
       img = img_nomalice;
     } else if ( ice1flag ) {
@@ -218,6 +220,9 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
     Display_enable = enable;
     if(enable) _displaied.OnNext(Unit.def);
     background(255);
+    
+    println(img == img_nomal);
+    
     if( enable ){
       tick();
     } else if( img != img_nomal && img != img_open && img != img_close ){  //氷を外に出した後なら、trueを入れると通常場面（氷あり）が表示される

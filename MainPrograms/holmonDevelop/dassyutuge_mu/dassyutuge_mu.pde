@@ -28,6 +28,7 @@ ISensorReceivable sensorReceivable; //センサ
 eSceneState _state = eSceneState.Title;
 ModuleContainer moduleContainer = new ModuleContainer();
 boolean[] _keyFrags = new boolean[3]; //穴、冷蔵庫、金庫
+float playStartTime = 0;
 
 void setup()
 {
@@ -63,6 +64,8 @@ void Presentor()
       //シングルプレイモジュールの生成
       PlayModuleGenerator(0);
       ChangeState(eSceneState.Door);
+      
+      playStartTime = minute();
     }});
   titleSceneVisualizable.PushedMultiPlay().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
@@ -75,12 +78,16 @@ void Presentor()
       //赤モジュールの生成
       PlayModuleGenerator(1);
       ChangeState(eSceneState.Door);
+      
+      playStartTime = minute();
     }});
   playerNumberSelectVisualizable.PushedBlue().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
       //青モジュールの生成
       PlayModuleGenerator(2);
       ChangeState(eSceneState.Door);
+      
+      playStartTime = minute();
     }});
   playerNumberSelectVisualizable.PushedBack().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
@@ -132,7 +139,7 @@ void mousePressed()
 
 void stop()
 {
-  
+  playModule.Stop();
 }
 
 void init()

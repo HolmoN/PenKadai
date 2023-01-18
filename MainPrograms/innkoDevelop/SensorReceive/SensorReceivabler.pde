@@ -13,7 +13,19 @@ class SensorReceivabler implements ISensorReceivable
   public void init(SensorReceive s)
   {
     println(Serial.list()); //シリアルポートの一覧を表示
-    serial = new Serial(s, Serial.list()[0], 9600 );
+    
+    for(int i = 0; i < Serial.list().length; i++)
+    {
+      try 
+      {
+      serial = new Serial(s, Serial.list()[0], 9600 );
+      }
+      catch(Exception e) 
+      {
+        continue;
+      }
+    }
+    
     delay(2000);
     serial.write("a"); //最初のデータ送信要求文字ʼaʼを送信 
   }

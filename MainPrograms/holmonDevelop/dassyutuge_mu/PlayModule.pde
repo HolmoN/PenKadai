@@ -12,6 +12,7 @@ public interface IPlayModule
   public ISceneSwitcherVisualizable SceneSwitcher();
   
   public void DispSceneSwitcher(Boolean enable);
+  public void Stop();
 }
 
 public class PlayModule
@@ -172,6 +173,11 @@ public class SinglePlayModule extends PlayModule implements IPlayModule
         keyFrags[2] = true;
       }});
   }
+  
+  public void Stop()
+  {
+    
+  }
 }
 
 public class RedPlayModule extends PlayModule implements IPlayModule
@@ -284,6 +290,11 @@ public class RedPlayModule extends PlayModule implements IPlayModule
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
   }
+  
+  public void Stop()
+  {
+    networkConnectable.Stop();
+  }
 }
 
 public class BluePlayerModule extends PlayModule implements IPlayModule
@@ -395,5 +406,10 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
     
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
+  }
+  
+  public void Stop()
+  {
+    networkConnectable.Stop();
   }
 }
