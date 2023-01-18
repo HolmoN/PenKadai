@@ -5,7 +5,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
   Subject<Unit> _displaied = new Subject<Unit>();
 
   PImage img, keyimg, img_nomal, img_nomalice, img_ice1, img_ice2, img_ice3, img_key, img_open, img_close;
-  boolean nomaliceflag, ice1flag, ice2flag, ice3flag, keyflag, openflag, closeflag;
+  boolean nomalflag, nomaliceflag, ice1flag, ice2flag, ice3flag, keyflag, openflag, closeflag;
 
   boolean Display_enable;
   boolean getkey = false;   //鍵を入手しているか
@@ -49,6 +49,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
     circleButton = new CircleButton(50, 50, 40);    //戻るボタン
     returnButton = false;   //戻るボタン（クリックされたらtrueになる）
     
+    nomalflag = true;
     nomaliceflag = false;
     ice1flag = false;
     ice2flag = false;
@@ -77,6 +78,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
       img = img_nomal;
     }
     image(img, 0, 0);   //画像表示
+
     if ( keyflag ) {
       keyimg = img_key;
       image(img_key, 0, 0);   //鍵の画像表示
@@ -123,6 +125,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
         if (img == img_nomal) {
           if (mouseX>240 && mouseX<240+220 && mouseY>450 && mouseY<450+220) {
             closeflag = true;    //冷蔵庫をクリック
+            nomalflag = false;
           }
         } else if (img == img_close) {
           if (mouseX>120 && mouseX<120+560 && mouseY>140 && mouseY<140+610) {
@@ -189,7 +192,8 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
         windowflag = false;   //メッセージウィンドウ非表示
         if( img == img_open || img == img_close ){  //冷蔵庫の場面
           openflag = false;
-          closeflag = false;   //通常場面に戻る
+          closeflag = false;
+          nomalflag = true;    //通常場面に戻る
         }else if( img == img_ice1 || img == img_ice2 ){  //氷を溶かす場面
           returnButton = true;   //戻るボタンがクリックされた
           ice1flag = false;
@@ -198,7 +202,7 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
         }
       }
       
-      if( img == img_nomal || img == img_nomalice ){  //シーン切り替え可能かどうか
+      if( nomalflag || nomaliceflag ){  //シーン切り替え可能かどうか
         if( windowflag == false ){
           SceneSwitchable.OnNext(true);
           println("シーン切り替え可");
@@ -220,7 +224,22 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
     background(255);
     if( enable ){
       tick();
-    } else if( img != img_nomal && img != img_open && img != img_close ){  //氷を外に出した後なら、trueを入れると通常場面（氷あり）が表示される
+    } else {
+      if( nomaliceflag || ice1flag || ice2flag || ice3flag ){
+        nomaliceflag = true;
+        ice1flag = false;
+        ice2flag = false;
+        ice3flag = false;
+      } else{
+        nomalflag = true;
+        nomaliceflag = false;        
+        openflag = false;
+        closeflag = false;
+      }
+    }
+    
+    
+ /*   else if( img != img_nomal && img != img_open && img != img_close ){  //氷を外に出した後なら、trueを入れると通常場面（氷あり）が表示される
       nomaliceflag = true;
       ice1flag = false;
       ice2flag = false;
@@ -229,6 +248,6 @@ class RefrigeratorSceneVisualizer implements IRefrigeratorSceneVisualizable {
       nomaliceflag = false;  //氷を出す前か鍵入手後は通常場面（氷なし）が表示される
       openflag = false;
       closeflag = false;
-    }
-  }
+    }  */
+  } 
 }
