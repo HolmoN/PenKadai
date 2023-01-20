@@ -183,7 +183,6 @@ public class SinglePlayModule extends PlayModule implements IPlayModule
 public class RedPlayModule extends PlayModule implements IPlayModule
 {
   INetworkModule networkConnectable;
-  Boolean isServer = true;
   
   Boolean myKey;
   Boolean partnerKey;
@@ -206,7 +205,7 @@ public class RedPlayModule extends PlayModule implements IPlayModule
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_red();
     
-    networkConnectable = new NetworkModule(gam, isServer);
+    networkConnectable = new NetworkModule(gam, true); //<>//
   }
   @Override
   public void Present()
@@ -315,7 +314,6 @@ public class RedPlayModule extends PlayModule implements IPlayModule
 public class BluePlayerModule extends PlayModule implements IPlayModule
 {
   INetworkModule networkConnectable;
-  Boolean isServer = false;
   
   Boolean myKey;
   Boolean partnerKey;
@@ -338,7 +336,7 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_blue();
     
-    networkConnectable = new NetworkModule(gam, isServer); 
+    networkConnectable = new NetworkModule(gam, false); 
   }
   @Override
   public void Present()

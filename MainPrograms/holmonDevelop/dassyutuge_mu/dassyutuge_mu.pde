@@ -53,7 +53,7 @@ void setup()
   
   titleSceneVisualizable = new TitleSceneVisualizable();
   playerNumberSelectVisualizable = new PlayerNumberSelectVisualizer();
-  playModule = new SinglePlayModule(moduleContainer); 
+  playModule = new SinglePlayModule(moduleContainer, this); 
   resultVisualizable = new ResultVisualizer();
   
   //センサ
@@ -198,7 +198,7 @@ void ChangeState(eSceneState state)
 //0=一人用,1=赤,2=青0=一人用,
 void PlayModuleGenerator(int num)
 {
-  if(num == 0) playModule = new SinglePlayModule(moduleContainer);
+  if(num == 0) playModule = new SinglePlayModule(moduleContainer, this);
   if(num == 1) playModule = new RedPlayModule(moduleContainer, this);
   if(num == 2) playModule = new BluePlayerModule(moduleContainer, this);
   
