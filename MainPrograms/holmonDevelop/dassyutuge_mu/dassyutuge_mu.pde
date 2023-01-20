@@ -56,7 +56,9 @@ void setup()
   playModule = new SinglePlayModule(moduleContainer); 
   resultVisualizable = new ResultVisualizer();
   
-  sensorReceivable = new SensorReceivabler(); //センサ
+  //センサ
+  //sensorReceivable = new SensorReceivabler(); 
+  sensorReceivable = new NullSensor();
   
   //-------------------------------------------------------------------
   

@@ -33,13 +33,13 @@ public class PlayModule
   private int sceneNum = 0;
   
   //コンストラクタ
-  public PlayModule(ModuleContainer __moduleContainer)
+  public PlayModule(ModuleContainer __moduleContainer, dassyutuge_mu gam)
   {
     for(int i = 0; i < keyFrags.length; i++) keyFrags[i] = false;
     moduleContainer = __moduleContainer;
     sceneNum = 0;
     
-    GenerateInstance();
+    GenerateInstance(gam);
     Present();
     
     doorSceneVisualizable.init();
@@ -50,7 +50,7 @@ public class PlayModule
   }
   
   //インスタンスの生成
-  public void GenerateInstance()
+  public void GenerateInstance(dassyutuge_mu gam)
   {
     sceneSwitcherVisualizable = new SceneSwitcherVisualizer();
   }
@@ -98,15 +98,15 @@ public class PlayModule
 
 public class SinglePlayModule extends PlayModule implements IPlayModule
 {
-  public SinglePlayModule(ModuleContainer moduleContainer)
+  public SinglePlayModule(ModuleContainer moduleContainer, dassyutuge_mu gam)
   {
-    super(moduleContainer);
+    super(moduleContainer, gam);
   }
   
   @Override
-  public void GenerateInstance()
+  public void GenerateInstance(dassyutuge_mu gam)
   {
-    super.GenerateInstance();
+    super.GenerateInstance(gam);
     
     doorSceneVisualizable = new DoorSceneVisualizer();
     holeSceneVisualizable = new HoleSceneVisualizer();
@@ -190,23 +190,23 @@ public class RedPlayModule extends PlayModule implements IPlayModule
   
   public RedPlayModule(ModuleContainer moduleContainer, dassyutuge_mu gam)
   {
-    super(moduleContainer);
+    super(moduleContainer, gam);
     
     myKey = false;
     partnerKey = false;
-    
-    networkConnectable = new NetworkModule(gam, isServer);
   }
   
   @Override
-  public void GenerateInstance()
+  public void GenerateInstance(dassyutuge_mu gam)
   {
-    super.GenerateInstance();
+    super.GenerateInstance(gam);
     
     doorSceneVisualizable = new DoorSceneVisualizer();
     holeSceneVisualizable = new HoleSceneVisualizer();
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_red();
+    
+    networkConnectable = new NetworkModule(gam, isServer);
   }
   @Override
   public void Present()
@@ -322,23 +322,23 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
   
   public BluePlayerModule(ModuleContainer moduleContainer, dassyutuge_mu gam)
   {
-    super(moduleContainer);
+    super(moduleContainer, gam);
     
     myKey = false;
     partnerKey = false;
-    
-    networkConnectable = new NetworkModule(gam, isServer); 
   }
   
   @Override
-  public void GenerateInstance()
+  public void GenerateInstance(dassyutuge_mu gam)
   {
-    super.GenerateInstance();
+    super.GenerateInstance(gam);
     
     doorSceneVisualizable = new DoorSceneVisualizer();
     holeSceneVisualizable = new HoleSceneVisualizer();
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_blue();
+    
+    networkConnectable = new NetworkModule(gam, isServer); 
   }
   @Override
   public void Present()
