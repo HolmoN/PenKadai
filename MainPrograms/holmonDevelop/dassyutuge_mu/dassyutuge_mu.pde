@@ -84,7 +84,7 @@ void Presentor()
       PlayModuleGenerator(0);
       ChangeState(eSceneState.Door);
       
-      playStartTime = minute();
+      playStartTime = millis();
     }});
   titleSceneVisualizable.PushedMultiPlay().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
@@ -118,14 +118,18 @@ void Presentor()
     {
       //クリアタイムを算出する
       float clearTime = millis() - playStartTime;
+      println(millis() + " " + playStartTime);
       
-      int s = floor(clearTime*1000);
+      int s = floor(clearTime/1000);
+      println(s);
       
       int hour = s/3600;
       int min = (s%3600) / 60;
-      int sec = s %60;
+      int sec = s % 60;
       
-      String st = str(hour) + str(min) + str(sec);
+      println(str(hour) + ":" + str(min) + ":" + str(sec));
+      
+      String st = str(hour) + ":" + str(min) + "+" + str(sec);
       
       resultVisualizable.ReceiveClearTime(st);
     }});
