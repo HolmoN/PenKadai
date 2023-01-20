@@ -143,6 +143,7 @@ void draw()
   resultVisualizable.tick();
   sensorReceivable.tick(); //センサ
   
+  playModule.Tick();
   playModule.SceneSwitcher().tick();
 }
 

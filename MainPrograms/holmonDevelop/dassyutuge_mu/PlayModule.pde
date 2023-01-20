@@ -12,6 +12,8 @@ public interface IPlayModule
   public ISceneSwitcherVisualizable SceneSwitcher();
   
   public void DispSceneSwitcher(Boolean enable);
+  
+  public void Tick();
   public void Stop();
 }
 
@@ -89,6 +91,9 @@ public class PlayModule
     if(enable) sceneSwitcherVisualizable.Display(true);
     else sceneSwitcherVisualizable.Display(false);
   }
+  
+  public void Tick(){}
+  public void Stop(){}
 }
 
 public class SinglePlayModule extends PlayModule implements IPlayModule
@@ -173,17 +178,12 @@ public class SinglePlayModule extends PlayModule implements IPlayModule
         keyFrags[2] = true;
       }});
   }
-  
-  public void Stop()
-  {
-    
-  }
 }
 
 public class RedPlayModule extends PlayModule implements IPlayModule
 {
-  INetworkConnectable networkConnectable;
-  Boolean isServer = false;
+  INetworkModule networkConnectable;
+  Boolean isServer = true;
   
   Boolean myKey;
   Boolean partnerKey;
@@ -194,7 +194,8 @@ public class RedPlayModule extends PlayModule implements IPlayModule
     
     myKey = false;
     partnerKey = false;
-    networkConnectable.IsServer(isServer, gam); 
+    
+    networkConnectable = new NetworkModule(gam, isServer);
   }
   
   @Override
@@ -206,8 +207,6 @@ public class RedPlayModule extends PlayModule implements IPlayModule
     holeSceneVisualizable = new HoleSceneVisualizer();
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_red();
-    
-    networkConnectable = new NetworkConnect();
   }
   @Override
   public void Present()
@@ -267,34 +266,46 @@ public class RedPlayModule extends PlayModule implements IPlayModule
       }});
     strongboxSceneVisualizable.SceneSwitchable().Subscribe(new fn<Boolean>(){ public void func(Boolean m)
       {
-        NetworkConnection();
+        //送信
+        int wr = 0;
+        if(myKey) wr = 1;
+        networkConnectable.Write(str(wr));
+        
+        CheckFrag();
         
         DispSceneSwitcher(m);
       }});
     strongboxSceneVisualizable.GetKey().Subscribe(new fn<Unit>(){ public void func(Unit m)
       {
         myKey = true;
-        NetworkConnection();
+        
+        //送信
+        int wr = 0;
+        if(myKey) wr = 1;
+        networkConnectable.Write(str(wr));
+        
+        CheckFrag();
+      }});
+      
+    networkConnectable.receive().Subscribe(new fn<Boolean>(){ public void func(Boolean b)
+      {
+        partnerKey = b;
+        CheckFrag();
       }});
   }
   
-  private void NetworkConnection()
+  private void CheckFrag()
   {
-    //受信
-    partnerKey = networkConnectable.Receive();
-    strongboxSceneVisualizable.ReceivePartnerKeyFrag(partnerKey);
-    
-    println("Received");
-    
-    //送信
-    networkConnectable.Send(myKey);
-    
-    println("Received");
-    
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
   }
   
+  @Override
+  public void Tick()
+  {
+    networkConnectable.Tick();
+  }
+  @Override
   public void Stop()
   {
     networkConnectable.Stop();
@@ -303,7 +314,7 @@ public class RedPlayModule extends PlayModule implements IPlayModule
 
 public class BluePlayerModule extends PlayModule implements IPlayModule
 {
-  INetworkConnectable networkConnectable;
+  INetworkModule networkConnectable;
   Boolean isServer = false;
   
   Boolean myKey;
@@ -315,7 +326,8 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
     
     myKey = false;
     partnerKey = false;
-    networkConnectable.IsServer(isServer, gam); 
+    
+    networkConnectable = new NetworkModule(gam, isServer); 
   }
   
   @Override
@@ -327,8 +339,6 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
     holeSceneVisualizable = new HoleSceneVisualizer();
     refrigeratorSceneVisualizable = new RefrigeratorSceneVisualizer();
     strongboxSceneVisualizable = new StrongboxSceneVisualizer_blue();
-    
-    networkConnectable = new NetworkConnect();
   }
   @Override
   public void Present()
@@ -388,30 +398,46 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
       }});
     strongboxSceneVisualizable.SceneSwitchable().Subscribe(new fn<Boolean>(){ public void func(Boolean m)
       {
-        NetworkConnection();
+        //送信
+        int wr = 0;
+        if(myKey) wr = 1;
+        networkConnectable.Write(str(wr));
+        
+        CheckFrag();
         
         DispSceneSwitcher(m);
       }});
     strongboxSceneVisualizable.GetKey().Subscribe(new fn<Unit>(){ public void func(Unit m)
       {
         myKey = true;
-        NetworkConnection();
+        
+        //送信
+        int wr = 0;
+        if(myKey) wr = 1;
+        networkConnectable.Write(str(wr));
+        
+        CheckFrag();
+      }});
+      
+    networkConnectable.receive().Subscribe(new fn<Boolean>(){ public void func(Boolean b)
+      {
+        partnerKey = b;
+        CheckFrag();
       }});
   }
   
-  private void NetworkConnection()
+  private void CheckFrag()
   {
-    //受信
-    partnerKey = networkConnectable.Receive();
-    strongboxSceneVisualizable.ReceivePartnerKeyFrag(partnerKey);
-    
-    //送信
-    networkConnectable.Send(myKey);
-    
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
   }
   
+  @Override
+  public void Tick()
+  {
+    networkConnectable.Tick();
+  }
+  @Override
   public void Stop()
   {
     networkConnectable.Stop();
