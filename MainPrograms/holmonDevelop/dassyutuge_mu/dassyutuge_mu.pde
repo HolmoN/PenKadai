@@ -57,8 +57,8 @@ void setup()
   resultVisualizable = new ResultVisualizer();
   
   //センサ
-  //sensorReceivable = new SensorReceivabler(); 
-  sensorReceivable = new NullSensor();
+  sensorReceivable = new SensorReceivabler(); 
+  //sensorReceivable = new NullSensor();
   
   //-------------------------------------------------------------------
   

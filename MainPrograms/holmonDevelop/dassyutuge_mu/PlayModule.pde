@@ -295,6 +295,7 @@ public class RedPlayModule extends PlayModule implements IPlayModule
   
   private void CheckFrag()
   {
+    strongboxSceneVisualizable.ReceivePartnerKeyFrag(partnerKey);
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
   }
@@ -393,16 +394,16 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
     strongboxSceneVisualizable.Displaied().Subscribe(new fn<Unit>(){ public void func(Unit m)
       {
         strongboxSceneVisualizable.ReceiveModuleValue(moduleContainer);
-      }});
-    strongboxSceneVisualizable.SceneSwitchable().Subscribe(new fn<Boolean>(){ public void func(Boolean m)
-      {
+        
         //送信
         int wr = 0;
         if(myKey) wr = 1;
         networkConnectable.Write(str(wr));
         
         CheckFrag();
-        
+      }});
+    strongboxSceneVisualizable.SceneSwitchable().Subscribe(new fn<Boolean>(){ public void func(Boolean m)
+      {
         DispSceneSwitcher(m);
       }});
     strongboxSceneVisualizable.GetKey().Subscribe(new fn<Unit>(){ public void func(Unit m)
@@ -419,6 +420,7 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
       
     networkConnectable.receive().Subscribe(new fn<Boolean>(){ public void func(Boolean b)
       {
+        println("r" + b);
         partnerKey = b;
         CheckFrag();
       }});
@@ -426,6 +428,7 @@ public class BluePlayerModule extends PlayModule implements IPlayModule
   
   private void CheckFrag()
   {
+    strongboxSceneVisualizable.ReceivePartnerKeyFrag(partnerKey);
     //フラグ確認
     if(myKey && partnerKey) keyFrags[2] = true;
   }
