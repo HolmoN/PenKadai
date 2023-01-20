@@ -98,7 +98,7 @@ void Presentor()
       PlayModuleGenerator(1);
       ChangeState(eSceneState.Door);
       
-      playStartTime = minute();
+      playStartTime = millis();
     }});
   playerNumberSelectVisualizable.PushedBlue().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
@@ -106,7 +106,7 @@ void Presentor()
       PlayModuleGenerator(2);
       ChangeState(eSceneState.Door);
       
-      playStartTime = minute();
+      playStartTime = millis();
     }});
   playerNumberSelectVisualizable.PushedBack().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
@@ -117,13 +117,17 @@ void Presentor()
   resultVisualizable.Displaied().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
       //クリアタイムを算出する
-      float clearTime = minute() - playStartTime;
+      float clearTime = millis() - playStartTime;
       
+      int s = floor(clearTime*1000);
       
-      //int h = floor()
+      int hour = s/3600;
+      int min = (s%3600) / 60;
+      int sec = s %60;
       
+      String st = str(hour) + str(min) + str(sec);
       
-      resultVisualizable.ReceiveClearTime("");
+      resultVisualizable.ReceiveClearTime(st);
     }});
   resultVisualizable.Clicked().Subscribe(new fn<Unit>(){ public void func(Unit m)
     {
