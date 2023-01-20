@@ -12,7 +12,7 @@ class NetworkModule
   int pass = 12345;
   boolean _isServer = false;
   
-  public NetworkModule(sketch_230120a parent, boolean isServer)
+  public NetworkModule(Netowrk parent, boolean isServer)
   {
     _isServer = isServer;
     
